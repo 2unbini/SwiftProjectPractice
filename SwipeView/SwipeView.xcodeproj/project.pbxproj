@@ -13,6 +13,8 @@
 		A875974D27BBAF43009D4D1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A875974B27BBAF43009D4D1A /* Main.storyboard */; };
 		A875974F27BBAF45009D4D1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A875974E27BBAF45009D4D1A /* Assets.xcassets */; };
 		A875975227BBAF45009D4D1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A875975027BBAF45009D4D1A /* LaunchScreen.storyboard */; };
+		A875975A27BBB052009D4D1A /* BaseScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A875975927BBB052009D4D1A /* BaseScrollView.swift */; };
+		A875975C27BBB1CA009D4D1A /* HorizontalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A875975B27BBB1C9009D4D1A /* HorizontalScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		A875974E27BBAF45009D4D1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A875975127BBAF45009D4D1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A875975327BBAF45009D4D1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A875975927BBB052009D4D1A /* BaseScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScrollView.swift; sourceTree = "<group>"; };
+		A875975B27BBB1C9009D4D1A /* HorizontalScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				A875974E27BBAF45009D4D1A /* Assets.xcassets */,
 				A875975027BBAF45009D4D1A /* LaunchScreen.storyboard */,
 				A875975327BBAF45009D4D1A /* Info.plist */,
+				A875975927BBB052009D4D1A /* BaseScrollView.swift */,
+				A875975B27BBB1C9009D4D1A /* HorizontalScrollView.swift */,
 			);
 			path = SwipeView;
 			sourceTree = "<group>";
@@ -138,6 +144,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A875975C27BBB1CA009D4D1A /* HorizontalScrollView.swift in Sources */,
+				A875975A27BBB052009D4D1A /* BaseScrollView.swift in Sources */,
 				A875974A27BBAF43009D4D1A /* ViewController.swift in Sources */,
 				A875974627BBAF43009D4D1A /* AppDelegate.swift in Sources */,
 				A875974827BBAF43009D4D1A /* SceneDelegate.swift in Sources */,
