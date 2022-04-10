@@ -15,7 +15,19 @@ struct Retrospective {
     var date: Date
     var summary: Color
     var satisfiedReviews: [Review]
-    var dissatisfiedRevies: [Review]
+    var dissatisfiedReviews: [Review]
+    
+    init(
+        date: Date = Date(),
+        summary: Color = .pink,
+        satisfiedReviews: [Review] = [Review](),
+        dissatisfiedReviews: [Review] = [Review]()
+    ) {
+        self.date = date
+        self.summary = summary
+        self.satisfiedReviews = satisfiedReviews
+        self.dissatisfiedReviews = dissatisfiedReviews
+    }
 }
 
 /// 일에 대한 리뷰
@@ -29,7 +41,8 @@ struct Review {
 /// 할 일
 /// date: 날짜
 /// content: 내용
-struct Todo {
+struct Todo: Identifiable {
+    var id: UUID = UUID()
     var date: Date
     var content: String
 }
@@ -37,7 +50,8 @@ struct Todo {
 /// 해시태그
 /// title: 해시태그 이름
 /// count: 해시태그 빈도수
-struct Hashtag {
+struct Hashtag: Identifiable, Hashable {
+    var id: UUID = UUID()
     var title: String
     var count: Int
 }
@@ -59,7 +73,7 @@ func makeMockData() -> [Retrospective] {
                     ]
                 )
             ],
-            dissatisfiedRevies: [
+            dissatisfiedReviews: [
                 Review(
                     todo: Todo(
                         date: Date(),
@@ -74,56 +88,55 @@ func makeMockData() -> [Retrospective] {
         ),
         Retrospective(
             date: Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-            summary: .yellow,
+            summary: .blue,
             satisfiedReviews: [
                 Review(
                     todo: Todo(
                         date: Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                        content: "SwiftUI"
+                        content: "애플 디벨로퍼 아카데미"
                     ),
                     hashtags: [
-                        Hashtag(title: "#코딩재밌어", count: 5),
-                        Hashtag(title: "#스마트폰멀리함", count: 2)
+                        Hashtag(title: "#SwiftUI", count: 5),
+                        Hashtag(title: "#즐거운코딩", count: 2)
                     ]
                 )
             ],
-            dissatisfiedRevies: [
+            dissatisfiedReviews: [
                 Review(
                     todo: Todo(
                         date: Date(),
-                        content: "Sketch"
+                        content: "책읽기"
                     ),
                     hashtags: [
-                        Hashtag(title: "#디자인어려워", count: 5),
-                        Hashtag(title: "#날씨짱좋아", count: 2)
+                        Hashtag(title: "#시간이없어", count: 5)
                     ]
                 )
             ]
         ),
         Retrospective(
             date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
-            summary: .yellow,
+            summary: .red,
             satisfiedReviews: [
                 Review(
                     todo: Todo(
                         date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
-                        content: "SwiftUI"
+                        content: "밥 해먹기"
                     ),
                     hashtags: [
-                        Hashtag(title: "#코딩재밌어", count: 5),
-                        Hashtag(title: "#스마트폰멀리함", count: 2)
+                        Hashtag(title: "#습관만들기", count: 5),
+                        Hashtag(title: "#건강한돼지", count: 2)
                     ]
                 )
             ],
-            dissatisfiedRevies: [
+            dissatisfiedReviews: [
                 Review(
                     todo: Todo(
                         date: Date(),
-                        content: "Sketch"
+                        content: "물 마시기"
                     ),
                     hashtags: [
-                        Hashtag(title: "#디자인어려워", count: 5),
-                        Hashtag(title: "#날씨짱좋아", count: 2)
+                        Hashtag(title: "#외않마셔", count: 5),
+                        Hashtag(title: "#물이없어", count: 2)
                     ]
                 )
             ]
