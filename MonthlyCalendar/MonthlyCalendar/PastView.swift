@@ -11,10 +11,26 @@ struct PastView: View {
     
     // MARK: - Properties
     
+    /// 목 데이터
     @State private var mockData: [Retrospective] = makeMockData()
+    
+    /// < > 버튼으로 월별 이동할 때 사용하는 변수
+    /// 오늘의 날짜로부터 얼만큼 떨어져 있는 달인지 계산할 때 사용
     @State private var currentMonth: Int = 0
+    
+    /// 현재 날짜
+    /// 월별 이동할 때 날짜 계산하기 위해 사용하는 변수
     @State private var currentDate: Date = Date()
+    
+    /// 선택된 날짜
+    /// 하단 리뷰 창에서 쓰일 마지막으로 선택된 변수
+    @State private var selectedDate: Date = Date()
+    
+    /// 선택된 리뷰
+    /// 하단 리뷰 창에서 쓰일 마지막으로 선택된 회고 데이터
     @State private var currentReview: Retrospective?
+    
+    /// 스크린 사이즈
     private let screenSize = UIScreen.main.bounds
     
     init() {
@@ -35,6 +51,7 @@ struct PastView: View {
                 Spacer()
                 review
             }
+            .padding(.horizontal, 20)
         }
     }
     
@@ -43,20 +60,13 @@ struct PastView: View {
     
     /// 캘린더
     var calendar: some View {
-        Rectangle()
-            .cornerRadius(10)
-            .padding(.horizontal, 15)
-            .foregroundColor(.white)
-            .frame(width: screenSize.width, height: screenSize.height * 0.45, alignment: .top)
-            .overlay(alignment: .top, content: {
-                VStack {
-                    header
-                    dates
-                }
-                .padding(.all, 20)
-                .frame(width: screenSize.width, height: screenSize.height * 0.4, alignment: .top)
-            })
-        
+        VStack {
+            header
+            dates
+        }
+        .padding(.all, 10)
+        .background(.white)
+        .cornerRadius(10)
     }
     
     /// 상단 바
@@ -112,18 +122,21 @@ struct PastView: View {
             segues
             weekdaySymbols
         }
+        .padding(.top, 10)
     }
     
+    /// 날짜 뷰
     var dates: some View {
         let columns = Array(repeating: GridItem(.flexible()), count: 7)
         let dates = generateDates()
         
-        return LazyVGrid(columns: columns, spacing: 15) {
+        return LazyVGrid(columns: columns, spacing: 0) {
             ForEach(0..<dates.count, id: \.self) { index in
                 if let day = dates[index] {
                     dateView(day: day)
                         .onTapGesture {
                             currentDate = day
+                            selectedDate = day
                             currentReview = mockData.first(where: { retrospective in
                                 retrospective.date.isSameAs(date: currentDate)
                             })
@@ -169,7 +182,7 @@ struct PastView: View {
     
     // MARK: - ViewBuilder, View Functions
     
-    /// 각 날짜를 그리는 뷰
+    /// 각 날짜 한 칸을 그리는 뷰
     @ViewBuilder
     func dateView(day: Date) -> some View {
         
@@ -197,26 +210,67 @@ struct PastView: View {
     /// 회고 뷰
     @ViewBuilder
     var review: some View {
-        if let currentReview = currentReview {
-            ScrollView(.vertical) {
-                Group {
-                    Text("만족한 일")
-                    contentsView(retrospective: currentReview, hasSatisfied: true)
-                }
-                Group {
-                    Text("불만족한 일")
-                    contentsView(retrospective: currentReview, hasSatisfied: false)
+        VStack {
+            
+            // 상단 날짜, 편집 버튼
+            HStack {
+                Text("\(selectedDate.formattedString)")
+                Spacer()
+                Button {
+                    // TODO: 회고 창 열기
+                    print("open review modal view")
+                } label: {
+                    Text("편집")
                 }
             }
-        } else {
-            VStack(alignment: .center) {
-                Text("작성된 회고가 없습니다.")
-                Spacer()
+            .padding([.top, .horizontal], 20)
+            
+            // 하단 스크롤 가능한 내용 창
+            ScrollView(.vertical) {
+                if let currentReview = currentReview {
+                    satisfiedReview(currentReview: currentReview)
+                    dissatisfiedReview(currentReview: currentReview)
+                } else {
+                    Text("작성된 회고가 없습니다.")
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 20)
+                }
             }
         }
+        .background(.white)
+        .cornerRadius(10)
     }
     
-    func contentsView(retrospective: Retrospective, hasSatisfied: Bool) -> some View {
+    /// 만족한 일 리뷰 화면
+    private func satisfiedReview(currentReview: Retrospective) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 5) {
+                Text("만족한 일")
+                    .font(.callout.bold())
+                contentsView(retrospective: currentReview, hasSatisfied: true)
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 10)
+    }
+    
+    /// 불만족한 일 리뷰 화면
+    private func dissatisfiedReview(currentReview: Retrospective) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 5) {
+                Text("불만족한 일")
+                    .font(.callout.bold())
+                contentsView(retrospective: currentReview, hasSatisfied: false)
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
+    }
+    
+    /// 리뷰 내용을 보여주는 화면
+    private func contentsView(retrospective: Retrospective, hasSatisfied: Bool) -> some View {
         var reviews: [Review] = []
         
         if hasSatisfied {
@@ -226,7 +280,7 @@ struct PastView: View {
         }
         
         return ForEach(0..<reviews.count, id: \.self) { index in
-            VStack {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(reviews[index].todo.content)
                 HStack(spacing: 5) {
                     ForEach(reviews[index].hashtags, id: \.self) { hashtag in

@@ -14,6 +14,12 @@ extension Date {
         return formatter
     }
     
+    var dotFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd"
+        return formatter
+    }
+    
     var dateComponents: DateComponents {
         Calendar.current.dateComponents([.day, .month, .year], from: self)
     }
@@ -34,6 +40,10 @@ extension Date {
         let today = self.formatter.string(from: Date())
         let selectedDate = self.formatter.string(from: self)
         return today == selectedDate
+    }
+    
+    var formattedString: String {
+        self.dotFormatter.string(from: self)
     }
     
     func allDates() -> [Date] {
