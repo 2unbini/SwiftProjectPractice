@@ -46,6 +46,10 @@ extension Date {
         self.dotFormatter.string(from: self)
     }
     
+    var compactString: String {
+        "\(self.month)월 \(self.day)일"
+    }
+    
     func allDates() -> [Date] {
         guard let startDate = Calendar.current.date(
             from: Calendar.current.dateComponents(

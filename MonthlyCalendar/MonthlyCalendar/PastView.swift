@@ -43,7 +43,7 @@ struct PastView: View {
     
     var body: some View {
         ZStack {
-            Color.gray.opacity(0.3)
+            Color.background
                 .ignoresSafeArea()
             
             VStack {
@@ -64,6 +64,7 @@ struct PastView: View {
             header
             dates
         }
+        .frame(width: screenSize.width * 0.85, height: screenSize.height * 0.38, alignment: .top)
         .padding(.all, 10)
         .background(.white)
         .cornerRadius(10)
@@ -79,7 +80,8 @@ struct PastView: View {
                     Text("\(currentDate.month)월")
                     Text(String(currentDate.year))
                 }
-                .font(.callout.bold())
+                .foregroundColor(.customBlack)
+                .font(.system(size: 17, weight: .semibold))
                 Spacer()
                 Group {
                     Button {
@@ -95,8 +97,9 @@ struct PastView: View {
                         Image(systemName: "chevron.right")
                     }
                 }
+                .foregroundColor(Color.customBlack)
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 10)
             .padding(.bottom, 15)
             .onChange(
                 of: currentMonth) { newValue in
@@ -122,7 +125,7 @@ struct PastView: View {
             segues
             weekdaySymbols
         }
-        .padding(.top, 10)
+        .padding(.top, 20)
     }
     
     /// 날짜 뷰
@@ -192,62 +195,75 @@ struct PastView: View {
             ZStack {
                 Circle()
                     .fill(retrospective.summary)
+                    .opacity(day.isToday ? 1 : 0.5)
+                Circle()
+                    .strokeBorder(day.isToday ? Color.customBlack : .clear, lineWidth: 2)
+                    .opacity(day.isSameAs(date: selectedDate) ? 1 : 0.6)
+                // TODO: 색깔에 따라 글자색 다름
                 Text("\(day.day)")
-                    .font(.system(size: 17, weight: day.isToday ? .bold : .regular))
-                    .foregroundColor(.white)
+                    .foregroundColor(Color.customBlack)
+                    .opacity(day.isSameAs(date: selectedDate) ? 1 : 0.45)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 9)
             }
         } else {
             Text("\(day.day)")
-                .font(.system(size: 17, weight: day.isToday ? .bold : .regular))
-                .foregroundColor(day.isToday ? .white : .primary)
+                .foregroundColor(Color.customBlack)
+                .opacity(day.isSameAs(date: selectedDate) ? 1 : 0.45)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 9)
         }
     }
     
     /// 회고 뷰
-    @ViewBuilder
     var review: some View {
-        VStack {
-            
-            // 상단 날짜, 편집 버튼
-            HStack {
-                Text("\(selectedDate.formattedString)")
-                Spacer()
-                Button {
-                    // TODO: 회고 창 열기
-                    print("open review modal view")
-                } label: {
-                    Text("편집")
+        GeometryReader { proxy in
+            VStack {
+                
+                // 상단 날짜, 편집 버튼
+                HStack {
+                    Text("\(selectedDate.compactString)")
+                        .font(.system(size: 17, weight: .semibold))
+                    Spacer()
+                    Button {
+                        // TODO: 회고 창 열기
+                        print("open review modal view")
+                    } label: {
+                        Text("편집")
+                    }
+                }
+                .foregroundColor(.customBlack)
+                .padding([.top, .horizontal], 20)
+                
+                // 하단 스크롤 가능한 내용 창
+                ScrollView(.vertical) {
+                    if let currentReview = currentReview {
+                        satisfiedReview(currentReview: currentReview, proxy: proxy)
+                        dissatisfiedReview(currentReview: currentReview, proxy: proxy)
+                    } else {
+                        Text("작성된 회고가 없습니다.")
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 20)
+                    }
                 }
             }
-            .padding([.top, .horizontal], 20)
-            
-            // 하단 스크롤 가능한 내용 창
-            ScrollView(.vertical) {
-                if let currentReview = currentReview {
-                    satisfiedReview(currentReview: currentReview)
-                    dissatisfiedReview(currentReview: currentReview)
-                } else {
-                    Text("작성된 회고가 없습니다.")
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 20)
-                }
-            }
+            .background(.white)
+            .cornerRadius(10)
         }
-        .background(.white)
-        .cornerRadius(10)
     }
     
     /// 만족한 일 리뷰 화면
-    private func satisfiedReview(currentReview: Retrospective) -> some View {
+    private func satisfiedReview(currentReview: Retrospective, proxy: GeometryProxy) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
-                Text("만족한 일")
-                    .font(.callout.bold())
-                contentsView(retrospective: currentReview, hasSatisfied: true)
+                HStack {
+                    Image(systemName: "square")
+                    Text("만족카도")
+                        .font(.callout.bold())
+                        .foregroundColor(.customBlack)
+                }
+                .padding(.bottom, 13)
+                contentsView(retrospective: currentReview, proxy: proxy, hasSatisfied: true)
             }
             Spacer()
         }
@@ -256,12 +272,17 @@ struct PastView: View {
     }
     
     /// 불만족한 일 리뷰 화면
-    private func dissatisfiedReview(currentReview: Retrospective) -> some View {
+    private func dissatisfiedReview(currentReview: Retrospective, proxy: GeometryProxy) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 5) {
-                Text("불만족한 일")
-                    .font(.callout.bold())
-                contentsView(retrospective: currentReview, hasSatisfied: false)
+                HStack {
+                    Image(systemName: "square")
+                    Text("불만족카도")
+                        .font(.callout.bold())
+                    .foregroundColor(.customBlack)
+                }
+                .padding(.bottom, 13)
+                contentsView(retrospective: currentReview, proxy: proxy, hasSatisfied: false)
             }
             Spacer()
         }
@@ -270,7 +291,7 @@ struct PastView: View {
     }
     
     /// 리뷰 내용을 보여주는 화면
-    private func contentsView(retrospective: Retrospective, hasSatisfied: Bool) -> some View {
+    private func contentsView(retrospective: Retrospective, proxy: GeometryProxy, hasSatisfied: Bool) -> some View {
         var reviews: [Review] = []
         
         if hasSatisfied {
@@ -280,15 +301,68 @@ struct PastView: View {
         }
         
         return ForEach(0..<reviews.count, id: \.self) { index in
-            VStack(alignment: .leading, spacing: 3) {
-                Text(reviews[index].todo.content)
-                HStack(spacing: 5) {
-                    ForEach(reviews[index].hashtags, id: \.self) { hashtag in
-                        Text(hashtag.title)
-                    }
+            VStack(alignment: .leading, spacing: 7) {
+                HStack {
+                    Image(systemName: "circle")
+                    Text(reviews[index].todo.content)
+                        .foregroundColor(.customBlack)
                 }
+                makeHashtagView(hashtags: reviews[index].hashtags, proxy: proxy)
+                    .padding(.leading, 25)
             }
         }
     }
+    
+    private func tag(title: String) -> some View {
+        Text(title)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
+            .foregroundColor(Color.customBlack)
+            .background(Color.hashtagBackground)
+            .cornerRadius(10)
+    }
+    
+    private func makeHashtagView(hashtags: [Hashtag], proxy: GeometryProxy) -> some View {
+        var width = CGFloat.zero
+        var height = CGFloat.zero
+        
+        return ZStack(alignment: .topLeading) {
+            ForEach(hashtags, id: \.self) { hashtag in
+                tag(title: hashtag.title)
+                    .padding([.trailing, .bottom], 8)
+                    .alignmentGuide(.leading) { dimension in
+                        if abs(width - dimension.width) > proxy.size.width {
+                            width = 0
+                            height -= dimension.height
+                        }
+                        
+                        let result = width
+                        
+                        if hashtag == hashtags.last! {
+                            width = 0
+                        } else {
+                            width -= dimension.width
+                        }
+                        
+                        return result
+                    }
+                    .alignmentGuide(.top) { dimension in
+                        let result = height
+                        
+                        if hashtag == hashtags.last! {
+                            height = 0
+                        }
+                        
+                        return result
+                    }
+            }
+        }
+    }
+    
 }
 
+struct PastView_Previews: PreviewProvider {
+    static var previews: some View {
+        PastView()
+    }
+}

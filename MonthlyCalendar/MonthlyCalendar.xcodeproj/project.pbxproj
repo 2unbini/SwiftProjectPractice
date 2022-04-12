@@ -14,6 +14,7 @@
 		A847D98A2802A931002C5F43 /* PastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A847D9892802A931002C5F43 /* PastView.swift */; };
 		A847D98C2802A98B002C5F43 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A847D98B2802A98B002C5F43 /* Models.swift */; };
 		A847D9902802B7C2002C5F43 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A847D98F2802B7C2002C5F43 /* Header.swift */; };
+		D23F665B28050D8C006A5A20 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23F665A28050D8C006A5A20 /* Color+Extension.swift */; };
 		D2BD55372803195D0028553E /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD55362803195D0028553E /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +27,7 @@
 		A847D9892802A931002C5F43 /* PastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastView.swift; sourceTree = "<group>"; };
 		A847D98B2802A98B002C5F43 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		A847D98F2802B7C2002C5F43 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
+		D23F665A28050D8C006A5A20 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		D2BD55362803195D0028553E /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +69,7 @@
 				A847D97F2802A914002C5F43 /* Assets.xcassets */,
 				A847D9812802A914002C5F43 /* Preview Content */,
 				D2BD55362803195D0028553E /* Date+Extension.swift */,
+				D23F665A28050D8C006A5A20 /* Color+Extension.swift */,
 			);
 			path = MonthlyCalendar;
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A847D9902802B7C2002C5F43 /* Header.swift in Sources */,
+				D23F665B28050D8C006A5A20 /* Color+Extension.swift in Sources */,
 				A847D97E2802A913002C5F43 /* ContentView.swift in Sources */,
 				A847D98C2802A98B002C5F43 /* Models.swift in Sources */,
 				A847D98A2802A931002C5F43 /* PastView.swift in Sources */,

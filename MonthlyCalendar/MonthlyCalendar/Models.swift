@@ -60,7 +60,7 @@ func makeMockData() -> [Retrospective] {
     [
         Retrospective(
             date: Date(),
-            summary: .yellow,
+            summary: Color.summaryLevelOne,
             satisfiedReviews: [
                 Review(
                     todo: Todo(
@@ -69,6 +69,7 @@ func makeMockData() -> [Retrospective] {
                     ),
                     hashtags: [
                         Hashtag(title: "#코딩재밌어", count: 5),
+                        Hashtag(title: "#스마트폰멀리함", count: 2),
                         Hashtag(title: "#스마트폰멀리함", count: 2)
                     ]
                 )
@@ -88,7 +89,7 @@ func makeMockData() -> [Retrospective] {
         ),
         Retrospective(
             date: Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-            summary: .blue,
+            summary: .summaryLevelTwo,
             satisfiedReviews: [
                 Review(
                     todo: Todo(
@@ -115,7 +116,7 @@ func makeMockData() -> [Retrospective] {
         ),
         Retrospective(
             date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
-            summary: .red,
+            summary: .summaryLevelFive,
             satisfiedReviews: [
                 Review(
                     todo: Todo(
