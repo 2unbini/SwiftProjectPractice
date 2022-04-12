@@ -59,7 +59,7 @@ struct Hashtag: Identifiable, Hashable {
 func makeMockData() -> [Retrospective] {
     [
         Retrospective(
-            date: Date(),
+            date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
             summary: Color.summaryLevelOne,
             satisfiedReviews: [
                 Review(

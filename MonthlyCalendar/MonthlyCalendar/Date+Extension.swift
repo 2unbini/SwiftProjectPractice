@@ -37,9 +37,7 @@ extension Date {
     }
     
     var isToday: Bool {
-        let today = self.formatter.string(from: Date())
-        let selectedDate = self.formatter.string(from: self)
-        return today == selectedDate
+        return Calendar.current.isDate(Date(), inSameDayAs: self)
     }
     
     var formattedString: String {
