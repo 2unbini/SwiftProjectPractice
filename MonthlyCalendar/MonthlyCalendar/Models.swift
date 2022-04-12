@@ -50,11 +50,13 @@ struct Todo: Identifiable {
 /// 해시태그
 /// title: 해시태그 이름
 /// count: 해시태그 빈도수
-struct Hashtag: Identifiable, Hashable {
-    var id: UUID = UUID()
+struct Hashtag: Hashable {
+//    var id: UUID = UUID()
     var title: String
     var count: Int
 }
+
+// Calendar.current.date(byAdding: .day, value: -1, to: Date())!
 
 func makeMockData() -> [Retrospective] {
     [
@@ -64,7 +66,7 @@ func makeMockData() -> [Retrospective] {
             satisfiedReviews: [
                 Review(
                     todo: Todo(
-                        date: Date(),
+                        date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                         content: "SwiftUI"
                     ),
                     hashtags: [
@@ -77,7 +79,7 @@ func makeMockData() -> [Retrospective] {
             dissatisfiedReviews: [
                 Review(
                     todo: Todo(
-                        date: Date(),
+                        date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
                         content: "Sketch"
                     ),
                     hashtags: [
